@@ -6,6 +6,11 @@ const userSchema = new mongoose.Schema({
         type : String,
         required : true
     },
+    username: {
+        type: String,
+        required: true,
+        unique: true
+    },
     email : {
         type : String,
         required : true,
@@ -21,9 +26,18 @@ const userSchema = new mongoose.Schema({
     },
     role : {
         type : String,
-        enum : ['attendee', 'guest'],
+        enum : ['regular', 'guest'],
         default : 'guest'
-    }
+    },
+    // expiresAt: { 
+    //     type: Date, 
+    //     default: function() { 
+    //         if (this.role === 'guest') { 
+    //             return new Date(Date.now() + 2 * 60 * 60 * 1000); // 2 hours from now 
+    //         } 
+    //         return undefined; 
+    //     } 
+    // }
 }, {
     timestamps: true
 })
