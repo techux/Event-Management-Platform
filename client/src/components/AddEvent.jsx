@@ -64,7 +64,7 @@ const AddEvent = () => {
           category: "",
           location: "",
         });
-        window.location.reload();
+        // window.location.reload();
       } else {
         alert(result.message || "An unexpected error occurred");
       }
