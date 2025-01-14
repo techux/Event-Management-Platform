@@ -90,7 +90,7 @@ const AddEvent = () => {
   }
 
   return (
-    <section className="bg-white dark:bg-gray-900 py-12" id="addEvent">
+    <section className="bg-white dark:bg-gray-900 py-1" id="addEvent">
     <div className="flex flex-col items-center justify-center m-5">
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
         Add New Event

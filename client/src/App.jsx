@@ -15,6 +15,8 @@ import PageNotFound from "./Routes/PageNotFound";
 import TermsAndCondition from "./Routes/TermsAndCondition";
 import EventPage from "./Routes/EventPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import MyEvent from "./components/MyCreatedEvent";
+import MyJoinedEvent from "./components/MyJoinedEvents";
 import Profile from "./Routes/Profile";
 
 const router = createBrowserRouter([
@@ -103,6 +105,26 @@ const router = createBrowserRouter([
       <ProtectedRoute>
         <Navbar />
         <Profile/>
+        <Footer/>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path:"/myevents",
+    element: (
+      <ProtectedRoute>
+        <Navbar />
+        <MyEvent/>
+        <Footer/>
+      </ProtectedRoute>
+    )
+  },
+  {
+    path:"/joined",
+    element: (
+      <ProtectedRoute>
+        <Navbar />
+        <MyJoinedEvent/>
         <Footer/>
       </ProtectedRoute>
     )

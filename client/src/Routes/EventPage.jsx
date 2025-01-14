@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import RegisterEvent from "../components/RegisterEvent";
 
 const EventPage = () => {
-  const { slug } = useParams(); // Extract slug from the URL
+  const { slug } = useParams();
   const [eventData, setEventData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -23,7 +24,7 @@ const EventPage = () => {
     };
 
     fetchEventData();
-  }, [slug]); // Fetch data when slug changes
+  }, [slug]);
 
   if (loading) {
     return (
@@ -45,23 +46,20 @@ const EventPage = () => {
     <section className="bg-white dark:bg-gray-900">
       <div className="py-8 px-4 mx-auto max-w-screen-xl ">
         <div className="max-w-screen-md mx-auto">
-          {/* Event Title */}
           <h1 className="text-4xl font-extrabold text-gray-900 dark:text-white">
             {eventData?.name}
           </h1>
 
           <img
-  src={eventData?.image}
-  alt={eventData?.name}
-  className="object-cover h-96 w-full rounded-lg mt-4"
-/>
+            src={eventData?.image}
+            alt={eventData?.name}
+            className="object-cover h-96 w-full rounded-lg mt-4"
+          />
 
-          {/* Event Description */}
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
             {eventData?.description}
           </p>
 
-          {/* Event Details */}
           <div className="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-lg">
               <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
@@ -74,23 +72,24 @@ const EventPage = () => {
                 <p className="text-gray-600 dark:text-gray-300">
                   <strong>Location: </strong> {eventData?.location}
                 </p>
-                {/* <p className="text-gray-600 dark:text-gray-300">
+                {/* to be added soon
+                 <p className="text-gray-600 dark:text-gray-300">
                   <strong>Organizer: </strong> {eventData?.organizer}
                 </p> */}
               </div>
             </div>
 
-            {/* Registration Button */}
             <div className="bg-gray-50 dark:bg-gray-800 p-6 rounded-lg shadow-lg flex flex-col justify-between">
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
+              <button
+                className="text-xl font-semibold text-gray-900 dark:text-white"
+                onClick={() => alert("ok")}
+              >
                 Register Now
-              </h3>
+              </button>
               <p className="mt-4 text-gray-600 dark:text-gray-400">
                 Don’t miss out on this amazing event. Click below to register!
               </p>
-              <button className="mt-6 py-2 px-4 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200">
-                Register Now
-              </button>
+              <RegisterEvent eventId={eventData._id} />
             </div>
           </div>
         </div>
