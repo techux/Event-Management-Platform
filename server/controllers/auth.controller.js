@@ -71,7 +71,7 @@ const guestRegisterController = async (req, res)=>{
         const email = `${username}_${customAlphabet(alphabet, 4)()}@guest.mail`;
         const result = await User.create({name:guestName, username, email, password:"0", role:'guest'});
         const token = jwt.sign(
-            { userId: result._id },
+            { userId: result._id , role: "guest"},
             process.env.JWT_SECRET_KEY,
             { expiresIn: '2h' }
         ) ;
