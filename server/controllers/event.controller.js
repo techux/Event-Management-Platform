@@ -16,7 +16,6 @@ const getAllEventsController = async (req, res) =>{
 const getEventBySlug = async (req, res) =>{
     try {
         const slug = req.params.slug ;
-        logger.info(slug) ;
         const result = await Event.findOne({ slug }) ;
         if(!result){
             return res.status(200).json({status:"error", message: "Event not found"});
@@ -28,9 +27,7 @@ const getEventBySlug = async (req, res) =>{
     }
 }
 
-const createEventController = async (req, res) =>{
-    console.log("Hm hai Event create krne me");
-    
+const createEventController = async (req, res) =>{  
     try {
         const {name, description, image, datetime, category, location } = req.body ;
         if (!name || !description || !datetime || !location) {
@@ -40,22 +37,15 @@ const createEventController = async (req, res) =>{
         if (req.file) {
             const uploadResult = await cloudinary.uploader.upload(req.file.path);
             imageUrl = uploadResult.secure_url; 
-            logger.info(uploadResult);
-            console.log(`Image ka url hai  ${uploadResult.secure_url}`);
         }
-        
-        console.log(req.user);
-        
-        
+                
         try {
             const result = await Event.create({name, description, image:imageUrl, date:datetime,createdBy:req.user.userId, category, location }) ;
             // const result = await Event.create({name, description, image:imageUrl, date:datetime,createdBy:req.user.id, category, location }) ;
             return res.status(201).json(result);
         } catch (error) {
-            console.log("Hamre pass kuch errorhai : " + error.message);
-            console.log(error.stack);
-            return res.status(500).json({status:"error", message:"Internal Server Error hai kuch "+error.message})          
-            
+            console.log(error.stack || error);
+            return res.status(500).json({status:"error", message:"Internal Server Error "})          
         }
     } catch (error) {
         logger.error(error.stack || error)
@@ -73,6 +63,17 @@ const myEventsController = async (req, res) => {
         logger.error("Error hai ");
         logger.error(error.stack || error)
         return res.status(500).json({status:"error", message: "Unable to fetch your event" })
+    }
+}
+
+const myJoinedEvents = async (req, res) => {
+    try {
+        const result = await Event.find({
+            registeredUser: userId
+        })
+        return res.status(200).json(result);
+    } catch (error) {
+        
     }
 }
 
