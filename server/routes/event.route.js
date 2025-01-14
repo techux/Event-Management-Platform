@@ -7,8 +7,8 @@ const {getAllEventsController, getEventBySlug, createEventController, myEventsCo
 const router = express.Router();
 
 router.get("/", getAllEventsController) ;
-router.post("/", upload.single('image'), createEventController);
-router.get("/my", myEventsController);
+router.post("/", auth, upload.single('image'), createEventController);
+router.get("/my", auth, myEventsController);
 router.get("/:slug", getEventBySlug);
 
 module.exports = router ;

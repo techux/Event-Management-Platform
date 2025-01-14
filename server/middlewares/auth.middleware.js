@@ -3,12 +3,11 @@ const bcrypt = require('bcrypt');
 
 const auth = (req, res, next) => {
     const token = req.header('authorization')?.split("Bearer ")[1] ;
-    // const token = req.cookies['authorization']?.split("Bearer ")[1];
     if (!token) {
         return res.status(403).json({status:"error", message:"Access Denied ! No token Provided"}) ;
     }
     try {
-        const user = jwt.verify(token, process.env.JWT_SECRET) ;
+        const user = jwt.verify(token, process.env.JWT_SECRET_KEY) ;
         req.user = user ;
         next() ;
     } catch (error) {

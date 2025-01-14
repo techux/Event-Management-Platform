@@ -29,6 +29,8 @@ const getEventBySlug = async (req, res) =>{
 }
 
 const createEventController = async (req, res) =>{
+    console.log("Hm hai Event create krne me");
+    
     try {
         const {name, description, image, datetime, category, location } = req.body ;
         if (!name || !description || !datetime || !location) {
@@ -39,10 +41,22 @@ const createEventController = async (req, res) =>{
             const uploadResult = await cloudinary.uploader.upload(req.file.path);
             imageUrl = uploadResult.secure_url; 
             logger.info(uploadResult);
+            console.log(`Image ka url hai  ${uploadResult.secure_url}`);
         }
-
-        const result = await Event.create({name, description, image:imageUrl, date:datetime,createdBy:req.user.id, category, location }) ;
-        return res.status(201).json(result);
+        
+        console.log(req.user);
+        
+        
+        try {
+            const result = await Event.create({name, description, image:imageUrl, date:datetime,createdBy:req.user.userId, category, location }) ;
+            // const result = await Event.create({name, description, image:imageUrl, date:datetime,createdBy:req.user.id, category, location }) ;
+            return res.status(201).json(result);
+        } catch (error) {
+            console.log("Hamre pass kuch errorhai : " + error.message);
+            console.log(error.stack);
+            return res.status(500).json({status:"error", message:"Internal Server Error hai kuch "+error.message})          
+            
+        }
     } catch (error) {
         logger.error(error.stack || error)
         return res.status(500).json({status:"error", message: "Unable to create new event" })
@@ -52,7 +66,7 @@ const createEventController = async (req, res) =>{
 const myEventsController = async (req, res) => {
     try {
         console.log(req.user);
-        const result = await Event.find({createdBy:req.user.id})
+        const result = await Event.find({createdBy:req.user.userId})
         console.log(result)
         return res.status(200).json(result);
     } catch (error) {
