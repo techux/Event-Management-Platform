@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import axios from "axios" ;
+import Cookies from 'js-cookie';
 
 const AddEvent = () => {
   const [formData, setFormData] = useState({
@@ -23,13 +25,11 @@ const AddEvent = () => {
     e.preventDefault();
     const { name, description, image, datetime, category, location } = formData;
 
-    // Ensure all required fields are filled
     if (!name || !description || !image || !datetime || !category || !location) {
       alert("Please fill all the required fields");
       return;
     }
 
-    // Prepare form data for submission
     const data = new FormData();
     data.append("name", name);
     data.append("description", description);
@@ -39,12 +39,18 @@ const AddEvent = () => {
     data.append("location", location);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/events`, {
-        method: "POST",
-        body: data,
-      });
-
-      const result = await response.json();
+      const token = Cookies.get('token'); 
+      const response = await axios.post(
+        `${import.meta.env.VITE_BACKEND_API}/events`,
+        data, 
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+    
+      const result = response.data;
 
       if (response.status === 400) {
         alert(result.message);
@@ -58,6 +64,7 @@ const AddEvent = () => {
           category: "",
           location: "",
         });
+        window.location.reload();
       } else {
         alert(result.message || "An unexpected error occurred");
       }
@@ -68,6 +75,7 @@ const AddEvent = () => {
   };
 
   return (
+    <section className="bg-white dark:bg-gray-900 py-12">
     <div className="flex flex-col items-center justify-center m-5">
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
         Add New Event
@@ -176,6 +184,7 @@ const AddEvent = () => {
         </button>
       </form>
     </div>
+    </section>
   );
 };
 

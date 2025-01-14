@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
-import Cookies from "js-cookie";
+import Cookies from 'js-cookie';
 import { jwtDecode } from "jwt-decode";
 
 const Loginform = () => {
@@ -45,8 +45,15 @@ const Loginform = () => {
         { email, password }
       );
 
-      if (response.status === 200 && response.data.status === "ok") {
-        Cookies.set("token", response.data.token, { expires: 7 });
+      // if (response.status === 200 && response.data.status === "ok") {
+      //   Cookies.set("token", response.data.token, { expires: 7 });
+      //   navigate("/dashboard");
+      // } else {
+      //   setError(response.data.message || "Login failed. Please try again.");
+      // }
+      if (response.status === 200 && response.data.status === "ok" && response.data.token) {
+        Cookies.set("token", response.data.token, { expires: 1 });
+        console.log('Login success')
         navigate("/dashboard");
       } else {
         setError(response.data.message || "Login failed. Please try again.");
@@ -54,6 +61,7 @@ const Loginform = () => {
     } catch (error) {
       setLoading(false);
       if (error.response) {
+        console.log(error.response.data.message || "Unable to login, please try again later.")
         setError(error.response.data.message || "Unable to login, please try again later.");
       } else {
         setError("Unable to login, please try again later.");

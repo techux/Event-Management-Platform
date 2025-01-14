@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import EventCard from "../components/EventCard";
+import EventCard from "./EventCard";
+import Cookies from 'js-cookie';
 
 const Events = () => {
   const [events, setEvents] = useState([]);
@@ -9,25 +10,17 @@ const Events = () => {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        // Get the token from cookies
-        const token = document.cookie
-          .split('; ')
-          .find(row => row.startsWith('token='))
-          ?.split('=')[1];
-  
-        // If there's no token, you can handle it here (e.g., redirect to login)
+        const token = Cookies.get('token');
         if (!token) {
           throw new Error('No token found');
         }
   
-        // Fetch events with token in Authorization header
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/events/`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/events/my`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
-            "Authorization": `Bearer ${token}`, // Pass token in the header
-          },
-          credentials: "include", // This ensures cookies are sent along with the request
+            "Authorization": `Bearer ${token}`
+          }
         });
   
         if (!response.ok) {
@@ -68,10 +61,10 @@ const Events = () => {
     <section className="bg-white dark:bg-gray-900 py-12">
       <div className="max-w-screen-xl mx-auto px-4 text-center">
         <h1 className="text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-6">
-          My Joined Events
+          My Created Events
         </h1>
         <p className="text-lg text-gray-500 dark:text-gray-400 mb-6">
-          Checkout the events you joined!
+          Checkout the events you have created!
         </p>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {events.map((event) => (
