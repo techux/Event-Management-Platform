@@ -3,6 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from 'js-cookie';
 import { jwtDecode } from "jwt-decode";
+import ContinueAsGuest from "../components/ContinueAsGuest";
 
 const Loginform = () => {
   const [email, setEmail] = useState("");
@@ -152,12 +153,9 @@ const Loginform = () => {
               </p>
             </form>
             <hr />
-            <button
-              type="button"
-              className="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800"
-            >
-              Login as Guest
-            </button>
+            <div className="flex justify-center">
+              <ContinueAsGuest/>
+            </div>
           </div>
         </div>
       </div>

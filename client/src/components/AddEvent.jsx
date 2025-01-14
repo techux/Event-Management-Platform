@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios" ;
 import Cookies from 'js-cookie';
+import { jwtDecode } from "jwt-decode";
 
 const AddEvent = () => {
   const [formData, setFormData] = useState({
@@ -74,8 +75,22 @@ const AddEvent = () => {
     }
   };
 
+  // check for Guest user
+  const token = Cookies.get('token') ;
+  const user = jwtDecode(token).role ;
+  if (user === 'guest') {
+    return <section className="bg-white dark:bg-gray-900 py-12" id="addEvent">
+      <div className="flex flex-col items-center justify-center"> 
+      <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        Add New Event
+      </h2>
+        <span className="text-red-600 text-2xl text-center">You logged in as a guest user.<br/>Please login with email to add an event</span> 
+        </div>;
+    </section>
+  }
+
   return (
-    <section className="bg-white dark:bg-gray-900 py-12">
+    <section className="bg-white dark:bg-gray-900 py-12" id="addEvent">
     <div className="flex flex-col items-center justify-center m-5">
       <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
         Add New Event
