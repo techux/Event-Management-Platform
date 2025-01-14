@@ -15,6 +15,7 @@ import PageNotFound from "./Routes/PageNotFound";
 import TermsAndCondition from "./Routes/TermsAndCondition";
 import EventPage from "./Routes/EventPage";
 import ProtectedRoute from "./components/ProtectedRoute";
+import Profile from "./Routes/Profile";
 
 const router = createBrowserRouter([
   {
@@ -95,6 +96,16 @@ const router = createBrowserRouter([
         <Footer />
       </ProtectedRoute>
     ),
+  },
+  {
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <Navbar />
+        <Profile/>
+        <Footer/>
+      </ProtectedRoute>
+    )
   },
   {
     path:"/tos",

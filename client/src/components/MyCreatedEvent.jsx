@@ -15,7 +15,7 @@ const Events = () => {
           throw new Error('No token found');
         }
   
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/events/my`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/account/myevents`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
