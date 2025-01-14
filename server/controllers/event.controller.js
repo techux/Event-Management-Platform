@@ -55,9 +55,7 @@ const createEventController = async (req, res) =>{
 
 const myEventsController = async (req, res) => {
     try {
-        console.log(req.user);
         const result = await Event.find({createdBy:req.user.userId})
-        console.log(result)
         return res.status(200).json(result);
     } catch (error) {
         logger.error("Error hai ");
@@ -69,11 +67,44 @@ const myEventsController = async (req, res) => {
 const myJoinedEvents = async (req, res) => {
     try {
         const result = await Event.find({
-            registeredUser: userId
+            registeredUser: req.user.userId
         })
         return res.status(200).json(result);
     } catch (error) {
-        
+        logger.error(error.stack || error)
+        return res.status(500).json({status:"error", message: "Unable to fetch your Joined event" })
+    }
+}
+
+const registerForEventController = async (req, res) =>{
+    try {
+        const {eventId} = req.body.eventId;
+        if (!eventId) return res.status(400).json({status:"error", message: 'Event ID and User ID are required' });
+
+        const result = await Event.find({
+            _id:eventId,
+            registeredUser: req.user.userId
+        })
+
+        if (result) {
+            return res.status(400).json({status:"error", message:"User already registerd for the event"});
+        }
+
+        const event = await Event.updateOne(
+            { _id: eventId },
+            { $push: { registeredUser: req.user.userId } }
+          );
+
+          console.log(event);
+          
+          if (event.nModified === 0) {
+            return res.status(404).json({status:"error", message: 'Event not found or user already registered' });
+          }
+          return res.status(200).json({status:"ok",message: 'User registered for the event' });
+
+    } catch (error) {
+        logger.error(error.stack || error)
+        return res.status(500).json({status:"error", message: "Unable to register for event" })
     }
 }
 
@@ -82,5 +113,7 @@ module.exports = {
     getAllEventsController,
     getEventBySlug,
     createEventController,
-    myEventsController
+    myEventsController,
+    myJoinedEvents,
+    registerForEventController
 }
