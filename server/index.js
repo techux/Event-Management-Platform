@@ -24,6 +24,9 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 
+app.get("/", (req,res)=>{
+  res.send("OK From Server") ;
+})
 
 app.get("/ping", (req,res)=>{
     res.send("OK") ;
