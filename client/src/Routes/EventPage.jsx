@@ -11,7 +11,9 @@ const EventPage = () => {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_API}/events/${slug}`);
+        const response = await axios.get(
+          `${import.meta.env.VITE_BACKEND_API}/events/${slug}`
+        );
         setEventData(response.data);
         setLoading(false);
       } catch (err) {
@@ -48,6 +50,12 @@ const EventPage = () => {
             {eventData?.name}
           </h1>
 
+          <img
+  src={eventData?.image}
+  alt={eventData?.name}
+  className="object-cover h-96 w-full rounded-lg mt-4"
+/>
+
           {/* Event Description */}
           <p className="mt-4 text-lg text-gray-600 dark:text-gray-400">
             {eventData?.description}
@@ -66,9 +74,9 @@ const EventPage = () => {
                 <p className="text-gray-600 dark:text-gray-300">
                   <strong>Location: </strong> {eventData?.location}
                 </p>
-                <p className="text-gray-600 dark:text-gray-300">
+                {/* <p className="text-gray-600 dark:text-gray-300">
                   <strong>Organizer: </strong> {eventData?.organizer}
-                </p>
+                </p> */}
               </div>
             </div>
 
