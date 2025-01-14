@@ -21,7 +21,7 @@ const Events = () => {
         }
   
         // Fetch events with token in Authorization header
-        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/events/my`, {
+        const response = await fetch(`${import.meta.env.VITE_BACKEND_API}/events/`, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
